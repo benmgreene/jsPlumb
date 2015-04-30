@@ -1,15 +1,15 @@
 // package metadata file for Meteor.js
 
-var packageName = 'jsplumb:jsplumb';  // http://atmospherejs.com/jsplumb/jsplumb
+var packageName = 'benmgreene:jsplumb';  // http://atmospherejs.com/benmgreene/jsplumb
 var where = 'client';  // where to install: 'client', 'server', or ['client', 'server']
 
 var packageJson = JSON.parse(Npm.require("fs").readFileSync('package.json'));
 
 Package.describe({
   name: packageName,
-  summary: 'jsPlumb (official): visually connect elements on a web page, using SVG',
+  summary: 'jsPlumb: visually connect elements on a web page, using SVG',
   version: packageJson.version,
-  git: 'https://github.com/sporritt/jsPlumb.git'
+  git: 'https://github.com/benmgreene/jsPlumb.git'
 });
 
 Package.onUse(function (api) {

@@ -1,7 +1,7 @@
 /**
-* This is a static jsPlumbInstance that is created and registered on the window, really just for the sake of conveniense:  you do not have to use this; you can create your own instances using
-* the {{#crossLink "jsPlumbInstance/getInstance:method"}}{{/crossLink}} method. For a list of the available methods and properties on this object,
-* see the {{#crossLink "jsPlumbInstance"}}{{/crossLink}} API docs.
+* This is a static jsPlumbInstance that is created and registered on the window, really just for the sake of convenience:  you do not have to use this; you can create your own instances using
+* the `jsPlumbInstance.getInstance` method. For a list of the available methods and properties on this object,
+* see the `jsPlumbInstance` API docs.
 * @class jsPlumb
 * @static
 * @extends jsPlumbInstance
@@ -53,24 +53,22 @@
 */
 
 /**
-* Adds an Endpoint to a given element or elements.
+* Adds an Endpoint to a given element or elements. See also `jsPlumbInstance.addEndpoints`.
 * @method addEndpoint
 * @param {String|Object|Array} el Element to add the endpoint to. Either an element id, a selector representing some element(s), or an array of either of these. 
 * @param {Object} [params] Object containing Endpoint constructor arguments.  For more information, see {@link Endpoint}
 * @param {Object} [referenceParams] Object containing more Endpoint constructor arguments; it will be merged with params by jsPlumb.  You would use this if you had some 
 * shared parameters that you wanted to reuse when you added Endpoints to a number of elements. The allowed values in this object are anything that 'params' can contain.  See <Endpoint>.	
-* @return {Object|Array} The newly created Endpoint, if `el` referred to a single element.  Otherwise, an array of newly created `Endpoint`s. 
-* @see jsPlumbInstance.addEndpoints
+* @return {Object|Array} The newly created Endpoint, if `el` referred to a single element.  Otherwise, an array of newly created `Endpoint`s.
 */
 
 /**
-* Adds a list of Endpoints to a given element or elements.
+* Adds a list of Endpoints to a given element or elements. See also `jsPlumbInstance.addEndpoint`.
 * @method addEndpoints
 * @param {String|Object|Array} target Element to add the Endpoint to. Either an element id, a selector representing some element(s), or an array of either of these. 
 * @param {Array} endpoints List of objects containing Endpoint constructor arguments. one Endpoint is created for each entry in this list.  See {@link Endpoint}'s constructor documentation. 
 * @param {Object} [referenceParams] Object containing more Endpoint constructor arguments; it will be merged with params by jsPlumb.  You would use this if you had some shared parameters that you wanted to reuse when you added Endpoints to a number of elements.		  	 
-* @return {Array} List of newly created Endpoints, one for each entry in the `endpoints` argument. 
-* @see {@link jsPlumbInstance#addEndpoint}
+* @return {Array} List of newly created Endpoints, one for each entry in the `endpoints` argument.
 */
 
 /**
@@ -94,6 +92,7 @@
 * @param {String|Element|Endpoint} source Either an element, element id, or existing Endpoint. If you pass an element or element id for an element that
 * has been registered as a Connection source via makeSource, the Endpoint properties from that call are used.
 * @param {Boolean} [doNotRepaint=false] If true, the Connection will not be repainted after the source is changed.
+* @chainable
 * @return {jsPlumbInstance}  The current jsPlumb instance
 */
 
@@ -104,6 +103,7 @@
 * @param {String|Element|Endpoint} target Either an element, element id, or existing Endpoint. If you pass an element or element id for an element that
 * has been registered as a Connection target via makeTarget, the Endpoint properties from that call are used.
 * @param {Boolean} [doNotRepaint=false] If true, the Connection will not be repainted after the target is changed.
+* @chainable
 * @return {jsPlumbInstance}  The current jsPlumb instance
 */
 
@@ -113,6 +113,7 @@
  * @method setSuspendDrawing
  * @param {Boolean} val	Indicates whether to suspend or not
  * @param {Boolean} [repaintAfterwards=false]	Instructs jsPlumb to do a full repaint after changing the suspension state.
+ * @return {Boolean} The value of the suspend drawing flag _before_ this method was called.
  */
 
  /**
@@ -124,9 +125,15 @@
  /**
  * Suspends drawing, runs the given function, then re-enables drawing (and repaints, unless
  * you set 'doNotRepaintAfterwards' to true)
- * @method doWhileSuspended
+ * @method batch
  * @param {Function} fn Function to execute while drawing is suspended.
  * @param {Boolean} [doNotRepaintAfterwards=false] If true, will not run a repaint after running the function supplied to this function.
+ */
+
+/**
+ * Original method name for the `batch` function.
+ * @method doWhileSuspended
+ * @deprecated Will be removed in version 2.0.0
  */
 
 /**
@@ -179,19 +186,15 @@
   * If multiple scopes are passed in, the return value will be a map of
   *
   *    `{ scope -> [ connection... ] }`
-  * 
-  *  Parameters:
   *
-  *  	- scope	-	if the only argument to getConnections is a string, jsPlumb will treat that string as a scope filter, and return a list
-  *                  of connections that are in the given scope. use '*' for all scopes.
-  *      - options	-	if the argument is a JS object, you can specify a finer-grained filter:
-  *      
-  *      		-	*scope* may be a string specifying a single scope, or an array of strings, specifying multiple scopes. Also may have the value '*', indicating any scope.
-  *      		-	*source* either a string representing an element id, a selector, or an array of ids. Also may have the value '*', indicating any source.  Constrains the result to connections having this/these element(s) as source.
-  *      		-	*target* either a string representing an element id, a selector, or an array of ids. Also may have the value '*', indicating any target.  Constrains the result to connections having this/these element(s) as target.		 
-  *		flat    -	return results in a flat array (don't return an object whose keys are scopes and whose values are lists per scope).
-  * 
   * @method getConnections
+  * @param {String} scope If the first argument supplied to this function is a string, it is treated as a scope filter, and this method will return a list
+  *                  of connections that are in the given scope. use '*' for all scopes.
+  * @param {Object} options Filter options
+  * @param {String|String[]} [options.scope] may be a string specifying a single scope, or an array of strings, specifying multiple scopes. Also may have the value '*', indicating any scope.
+  * @param {String|String[]|Selector} [options.source] either a string representing an element id, a selector, or an array of ids. Also may have the value '*', indicating any source.  Constrains the result to connections having this/these element(s) as source.
+  * @param {String|String[]|Selector} [options.target] either a string representing an element id, a selector, or an array of ids. Also may have the value '*', indicating any target.  Constrains the result to connections having this/these element(s) as target.
+  * @param {Boolean} [flat=false] return results in a flat array (don't return an object whose keys are scopes and whose values are lists per scope).
   * @return {Array|Map} If only one scope was requested, a list of Connections that match the criteria. Otherwise, a map of [scope->connection lists].
   */
 
@@ -634,10 +637,18 @@
 
 /**
 * Removes the given element from the DOM, along with all Endpoints associated with it,
-* and their connections.  
+* and their connections.  This also removes all Endpoints and Connections belonging to child elements, as well as - of course -
+ * the child elements themselves.
 * @method remove
 * @param {String|Element|Selector} el The element in question.
-*/ 	
+*/
+
+/**
+ * Empties out the given element: all Endpoints and Connections belonging to child elements, as well as - of course -
+ * the child elements themselves. Endpoints and Connections belonging to the element itself are retained.
+ * @method empty
+ * @param {String|Element|Selector} el The element in question.
+ */
 
 /**
 * Removes all endpoints and connections and clears the listener list. To keep listeners call {@link jsPlumbInstance#deleteEveryEndpoint}
@@ -664,13 +675,6 @@
   * Gets a new instance of jsPlumb.
   * @method getInstance
   * @param {object} [_defaults] Optional default settings for the new instance.
-  */
- 
- /**
-  * Suspends drawing, runs the given function, then re-enables drawing (and repaints, unless you tell it not to)
-  * @method doWhileSuspended
-  * @param {Function} fn Function to run while suspended.
-  * @param {Boolean} doNotRepaintAfterwards If true, jsPlumb won't run a full repaint. Otherwise it will.
   */
 
 /**
@@ -705,6 +709,7 @@
     * @param {Object} el Either the id of the element, or a selector for the element.
     * @param {Object} [params] Optional parameters.
     * @param {Boolean} [params.fireEvent=true] Whether or not to fire the detach event.
+     * @param {Boolean} [paramsforceDetach=false] If true, this call will ignore any `beforeDetach` interceptors.
     * @return {jsPlumbInstance} The current jsPlumb instance.
     */  
     /**        
@@ -712,24 +717,26 @@
     * @method detachEveryConnection
     * @param {Object} [params] optional params object for the call
     * @param {Boolean} [params.fireEvent=true] Whether or not to fire detach events
+    * @param {Boolean} [paramsforceDetach=false] If true, this call will ignore any `beforeDetach` interceptors.
     * @return {jsPlumbInstance} The current jsPlumb Instance
     * @see jsPlumbInstance#deleteEveryEndpoint
     */
 
-    /*
-    * Initialises the draggability of some element or elements.  You should use this instead of your 
-    * library's draggable method so that jsPlumb can setup the appropriate callbacks.  Your 
-    * underlying library's drag method is always called from this method.
-    * @method draggable
-    * @param {Object} el Either an element id, a list of element ids, or a selector. 
-    * @param {Object} [options] Options to pass through to the underlying library. A common use case in jQueryUI, for instance, is to provide a `containment` parameter:
-    * 
-    *         `jsPlumb.draggable("someElementId", {
-    *            containment:"parent"
-    *          });`
-    *    
-    * @return {jsPlumbInstance} The current jsPlumb instance.
-    */
+/**
+* Initialises some element or elements to be draggable.  You should use this instead of your
+* library's draggable method so that jsPlumb can setup the appropriate callbacks.  Your
+* underlying library's drag method is always called from this method.
+* @method draggable
+* @param {Object} el Either an element id, an element, a list of element ids, or a selector.
+* @param {Object} [options] Options to pass through to the underlying library. A common use case in jQueryUI, for instance, is to provide a `containment` parameter:
+*
+*         `jsPlumb.draggable("someElementId", {
+*            containment:"parent"
+*          });`
+* @chainable
+* @return {jsPlumbInstance} The current jsPlumb instance.
+*/
+
 /**
 * This method takes the given selector spec and, using the current underlying library, turns it into
 * a selector from that library.  This method exists really as a helper function for those applications

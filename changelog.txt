@@ -1,3 +1,71 @@
+* 1.7.5
+
+    A minor-ish release; no changes to the API. Some refactoring of JS and of CSS. But one notable thing is that
+    touch events on Windows touch laptops are working now (in Chrome and IE; FF seems to still have issues)
+
+  BACKWARDS COMPATIBILITY
+
+      - The jQuery flavour was removed from the `main` section in `bower.json`.
+
+
+    ISSUES
+
+    295 - draggable not working in chrome
+    340 - Draggable stop event doesn't get called on all elements when dragging multiple elements
+    341 - Add possibility to change z-order of the "inPlaceCopy" endpoint.
+    344 - add getUuids method to Connection
+    345 - Error when two linked objects are with exactly same position
+
+
+* 1.7.4
+
+    Bugfixes.
+
+
+    ISSUES
+
+    237 - scroll is ignored in offset calculations
+    314 - jsPlumbUtil is not defined (webpack)
+    329 - Scroll issue
+    332 - endpoint label not working in newest version
+    333 - ReattachConnections not working when a connection is detached (jquery & vanilla 1.7.3)
+    336 - cannot drop a connection back on the endpoint to which it was previously attached
+
+
+
+* 1.7.3
+
+    Predominantly a bugfix release, this version brings a degree of uniformity to the behaviour of elements
+    configured with `makeSource` and `makeTarget`, and is a recommended upgrade if you are currently using any other 1.7.x version.
+
+
+  BACKWARDS COMPATIBILITY
+
+    - the `doWhileSuspended` method has been aliased as `batch`, and `doWhileSuspended` is now deprecated, to be removed in
+    version 2.0.0.
+
+  NEW FUNCTIONALITY
+
+  - there is a new interceptor in this release: `beforeDrag`.  You can use it to abort dragging a connection as soon as it
+  starts, and also to supply the initial data for a Connection that uses a parameterized type.
+
+  - added `jsPlumb.empty` function: remove child content from a node, including endpoints and connections, but not the element itself.
+
+  ISSUES
+
+  187 - jsPlumb.draggable() doesn't work with forms
+  281 - beforeDetach not triggered by jsPlumb.detachAllConnections
+  287 - Cannot drop source of connection on makeTarget element after 1.6.4
+  289 - Cannot prevent drop of source edge using beforeDrop on nested makeTarget elements
+  297 - Distinguish drag\click for Vanilla jsPlumb
+  298 - Fix for using library inside shadowDom (e.g. Polymer etc.)
+  307 - Setting Container multiple times fires events multiple times
+  311 - addType resets overlays
+  313 - setContainer does not work when container has overflow: scroll;
+  315 - setConnector removes existing overlays
+  317 - Docs incorrectly refer to "mouseenter"
+  326 - Connections not updating position - (detach, delete, readd, reconnect)
+
 
 * 1.7.2
 

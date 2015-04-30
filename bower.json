@@ -1,6 +1,6 @@
 {
   "name": "jsPlumb",
-  "version": "1.7.2",
+  "version": "1.7.5",
   "ignore": [
     "demo",
     "dist/apidocs",
@@ -22,6 +22,18 @@
     "index.html",
     "build-support.js",
     "package.json",
-    "todo.txt"
-  ]
+    "todo.txt",
+     "**/.*",
+    "bower_components",
+    "test"
+  ],
+  "main": [
+    "dist/js/dom.jsPlumb-1.7.5.js"
+  ],
+  "homepage": "http://jsplumbtoolkit.com",
+  "authors": [
+    "jsPlumb <hello@jsplumbtoolkit.com>"
+  ],
+  "description": "Visual connectivity for webapps",
+  "license": "MIT/GPL2"
 }

@@ -2,7 +2,7 @@
 <html>
     <head>
 
-        <title>jsPlumb 1.7.2 demo - jQuery</title>
+        <title>jsPlumb 1.7.5 demo - jQuery</title>
         <meta http-equiv="content-type" content="text/html;charset=utf-8" />
         <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet">
         <link rel="stylesheet" href="../../css/jsplumb.css">
@@ -34,15 +34,6 @@
         <div id="main">
             <!-- demo -->
             <div class="demo flowchart-demo" id="flowchart-demo">
-                <div class="explanation">
-                    <i class="fa fa-info-circle"></i>
-                    <h4>FLOWCHART</h4>
-                    <p>Nodes are connected with the Flowchart connector.</p>
-                    <p>Hover over connections to highlight them, click to delete. </p>
-                    <p>Drag new connections from hollow dots to solid dots. You can also drag connections from their source/target to other sources/targets, or back onto themselves.</p>
-                    <p>By default, Flowchart connectors have square corners, but by setting the 'cornerRadius' parameter, as we have here, you can get rounded corners.</p>
-                    <p>This demonstration uses jsPlumb 1.7.2, jQuery 1.9.0 and jQuery UI 1.9.2.For touch support, jQuery Touch Punch is used.</p>
-                </div>
                 <div class="window" id="flowchartWindow1"><strong>1</strong><br/><br/></div>
                 <div class="window" id="flowchartWindow2"><strong>2</strong><br/><br/></div>
                 <div class="window" id="flowchartWindow3"><strong>3</strong><br/><br/></div>
@@ -50,6 +41,15 @@
             </div>
             <!-- /demo -->
         </div>
+        <!-- explanation -->
+        <div class="explanation">
+            <h4>FLOWCHART</h4>
+            <p>Nodes are connected with the Flowchart connector.</p>
+            <p>Hover over connections to highlight them, click to delete. </p>
+            <p>Drag new connections from hollow dots to solid dots. You can also drag connections from their source/target to other sources/targets, or back onto themselves.</p>
+            <p>By default, Flowchart connectors have square corners, but by setting the 'cornerRadius' parameter, as we have here, you can get rounded corners.</p>
+        </div>
+        <!-- /explanation -->
 
         <script src="../../external/jquery-1.9.0-min.js"></script>
         <script src="../../external/jquery-ui-1.9.2.min.js"></script>
@@ -57,18 +57,19 @@
 
         <!-- JS -->
         <!-- support lib for bezier stuff -->
-        <script src="../../lib/jsBezier-0.6.js"></script>
+        <script src="../../lib/jsBezier-0.7.js"></script>
         <!-- event adapter -->
-        <script src="../../lib/mottle-0.4.js"></script>
+        <script src="../../lib/mottle-0.6.js"></script>
         <!-- geom functions -->
         <script src="../../lib/biltong-0.2.js"></script>
         <!-- jsplumb util -->
         <script src="../../src/util.js"></script>
         <script src="../../src/browser-util.js"></script>
-        <!-- base DOM adapter -->
-        <script src="../../src/dom-adapter.js"></script>
         <!-- main jsplumb engine -->
         <script src="../../src/jsPlumb.js"></script>
+        <!-- base DOM adapter -->
+        <script src="../../src/dom-adapter.js"></script>
+        <script src="../../src/overlay-component.js"></script>
         <!-- endpoint -->
         <script src="../../src/endpoint.js"></script>
         <!-- connection -->
@@ -83,7 +84,6 @@
         <script src="../../src/connectors-statemachine.js"></script>
         <!-- flowchart connectors -->
         <script src="../../src/connectors-flowchart.js"></script>
-        <script src="../../src/connector-editors.js"></script>
         <!-- SVG renderer -->
         <script src="../../src/renderers-svg.js"></script>
 

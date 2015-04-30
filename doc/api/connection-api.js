@@ -134,3 +134,15 @@
 * @method setVisible
 * @param {Boolean} visible Boolean indicating desired visible state.
 */
+
+/**
+ * Returns the data provided (if any) to this object for populating its types.
+ * @method getData
+ * @returns {Object} Data, or null.
+ */
+
+/**
+ * Gets the UUIDs of the two endpoints, if they are set.
+ * @method getUuids
+ * @returns {String[]} An array of [sourceUuid, targetUuid]. Either or both of these values may be null.
+ */

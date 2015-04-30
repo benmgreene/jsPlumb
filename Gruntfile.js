@@ -1,29 +1,19 @@
 
 var versions = {
-        JS_BEZIER : { f:"jsBezier", v:"0.6" },
+        JS_BEZIER : { f:"jsBezier", v:"0.7" },
         BILTONG : { f:"biltong", v:"0.2" },
-        MOTTLE : {f:"mottle", v:"0.4" },
-        KATAVORIO : {f:"katavorio", v:"0.4" }
+        MOTTLE : {f:"mottle", v:"0.6" },
+        KATAVORIO : {f:"katavorio", v:"0.6" }
     },
     get = function(name) { return "lib/" + versions[name].f + "-" + versions[name].v + ".js"; },
 
     libraries = [ "jquery", "dom" ],
     libraryNames = [ "jQuery", "Vanilla" ],
     renderers = [ "svg", "vml" ],
-    demos = [
-        [ "flowchart", "Flowchart" ],
-        [ "statemachine", "State Machine" ],
-        [ "draggableConnectors", "Drag and Drop"],
-        [ "perimeterAnchors", "Perimeter Anchors"],
-        [ "chart", "Hierarchical Chart" ],
-        [ "sourcesAndTargets", "Sources and Targets" ],
-        [ "dynamicAnchors", "Dynamic Anchors" ],
-        [ "animation", "Animation" ]
-    ],
     extraLibraries = {
         jquery:[ get("MOTTLE") ],
         dom:[ get("MOTTLE"), get("KATAVORIO") ]
-    }
+    },
     objects = {
         connectors : [
             "flowchart", "statemachine", "bezier", "straight"
@@ -32,7 +22,7 @@ var versions = {
             "svg", "vml"
         ],
         common:[
-            'util.js', 'browser-util.js', 'dom-adapter.js', 'jsPlumb.js', 'endpoint.js', 'connection.js', 'anchors.js', 'defaults.js', 'base-library-adapter.js'
+            'util.js', 'browser-util.js', 'jsPlumb.js', 'dom-adapter.js', 'overlay-component.js', 'endpoint.js', 'connection.js', 'anchors.js', 'defaults.js', 'base-library-adapter.js'
         ]
     },
     optionList = function(grunt, type) {
@@ -60,7 +50,6 @@ var versions = {
         sources.push.apply(sources, getList(grunt, "connectors"));
         sources.push.apply(sources, getList(grunt, "renderers"));
         sources.push("src/" + lib + ".jsPlumb.js");
-        console.dir(sources);
         return sources;
     },
     help = "\nBuilding jsPlumb\n" +
@@ -159,7 +148,8 @@ module.exports = function(grunt) {
                   '-W038':true,
 				  '-W044':true,
 				  '-W053':true,
-				  '-W055':true
+				  '-W055':true,
+                  '-W032':true
                 },
             files:{
                 src: [ 'src/base-library-adapter.js', 'src/anchors.js', 'src/util.js', 'src/browser-util.js', 'src/connection.js', 'src/connectors-bezier.js', 'src/connectors-flowchart.js', 'src/connectors-statemachine.js', 'src/defaults.js', 'src/dom-adapter.js', 'src/endpoint.js', 'src/dom.jsPlumb.js', 'src/jquery.jsPlumb.js', 'src/renderers-svg.js', 'src/renderers-vml.js', 'src/jsPlumb.js']
@@ -214,9 +204,12 @@ module.exports = function(grunt) {
 
 // ------------------------- prepare jekyll site task --------------------------------------------------------
 
+    var package = require('./package.json');
+    var support = require("./build-support.js");
+
     var _createDemos = function() {
-        for (var i = 0; i < demos.length; i++) {
-            var d = demos[i][0],
+        for (var i = 0; i < package.demos.length; i++) {
+            var d = package.demos[i][0],
                 js = grunt.file.read("demo/" + d + "/demo.js"),
                 css = grunt.file.read("demo/" + d + "/demo.css");
 
@@ -224,7 +217,7 @@ module.exports = function(grunt) {
             for (var j = 0; j < libraries.length; j++) {
                 var html = grunt.file.read("demo/" + d + "/" + libraries[j] + ".html");
                     m = html.match(/(<!-- demo.*>.*\n)(.*\n)*(.*\/demo -->)/),
-                    t = m[0].match(/<h4>(.*)<\/h4>/)[0];
+                    t = package.demos[i][1];
 
                 grunt.file.write("jekyll/demo/" + d + "/demo.js", js);
                 grunt.file.write("jekyll/demo/" + d + "/demo.css", css);
@@ -238,13 +231,12 @@ module.exports = function(grunt) {
                     base:"../..",
                     demo:d
                 });
-                grunt.file.write("jekyll/demo/" + demos[i][0] + "/" + libraries[j] +  ".html", fm + m[0]);
+                grunt.file.write("jekyll/demo/" + package.demos[i][0] + "/" + libraries[j] +  ".html", fm + m[0]);
             }
         }
     };
 
-    var package = require('./package.json');
-    var support = require("./build-support.js");
+
 
     //
     //  creates qunit test pages: we only need to create markdown files here; the jekyll layout fills in the rest.
@@ -348,7 +340,7 @@ module.exports = function(grunt) {
         }
         else {
             var oldV = new RegExp(grunt.config("pkg").version, "g");
-            // now update version number in all demos and src files
+            // now update version number in all demos and src files etc
             _replace("src", "*.js", oldV, newV);
             _replace("demo", "**/*.html", oldV, newV);
             _replace(".", "bower.json", oldV, newV);
